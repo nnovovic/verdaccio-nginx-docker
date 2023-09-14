@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  nginx:
+    image: flekadev/nginx
+    container_name: verdaccio_nginx
+    restart: unless-stopped
+    ports:
+      - "${NGINX_HTTP_PORT}:80"
+    volumes:
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    environment:
+      - "TZ=UTC"
+  verdaccio:
+    restart: unless-stopped
+    image: verdaccio/verdaccio
+    container_name: verdaccio_node
+    environment:
+      - VERDACCIO_PORT=${VERDACCIO_PORT}
+      - VERDACCIO_PUBLIC_URL=${VERDACCIO_PUBLIC_URL}
+      - FONTAWESOME_TOKEN=${FONTAWESOME_TOKEN}
+    ports:
+      - "${VERDACCIO_PORT}:${VERDACCIO_PORT}"
+    volumes:
+      - "./verdaccio/storage:/verdaccio/storage"
+      - "./verdaccio/conf:/verdaccio/conf"
+      - "./verdaccio/plugins:/verdaccio/plugins"

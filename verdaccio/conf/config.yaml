@@ -1,0 +1,27 @@
+storage: /verdaccio/storage
+auth:
+  htpasswd:
+    file: /verdaccio/conf/htpasswd
+    algorithm: bcrypt
+    rounds: 10
+    max_users: -1
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+  fontawesome:
+    url: https://npm.fontawesome.com/
+    auth:
+      type: bearer
+      token_env: FONTAWESOME_TOKEN
+packages:
+  '@fortawesome/*':
+     access: $authenticated
+     publish: $authenticated
+     proxy: fontawesome
+  '@*/*':
+    access: $authenticated
+    publish: $authenticated
+    proxy: npmjs
+  '**':
+    proxy: npmjs
+log: { type: stdout, format: pretty, level: http }
