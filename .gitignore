@@ -1,2 +1,4 @@
+.idea/
 .env
 verdaccio/conf/htpasswd
+.DS_Store
